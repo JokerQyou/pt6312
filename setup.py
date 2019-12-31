@@ -1,7 +1,7 @@
 # coding: utf-8
 import setuptools
 
-with open('README.md', 'w') as rf:
+with open('README.md', 'r') as rf:
     long_description = rf.read()
 
 setuptools.setup(
