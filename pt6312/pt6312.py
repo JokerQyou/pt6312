@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from time import sleep
+from threading import Event
 
 from gpiozero import OutputDevice as OP
 
@@ -28,14 +28,24 @@ class VFD(object):
         self.stb = OP(stb)
         self.din = OP(din)
         self.clk = OP(clk)
-
         self.hv = OP(hv_on)
-        self.hv.on()
+
+        self.init()
 
     def __repr__(self):
-        return '<VFD device@{}>'.format(id(self))
+        '''Object repr'''
+        return '<VFD device@{} [DIN={},CLK={},STB={},HV_ON={}], currently {}>'.format(
+            id(self),
+            self.din.pin,
+            self.clk.pin,
+            self.stb.pin,
+            self.hv.pin,
+            'on' if self.hv.is_active else 'off',
+        )
 
     def send(self, data):
+        '''Send a single byte to the display controller.
+        '''
         for i in range(8):
             self.clk.off()
             if data & 0x01:
@@ -47,15 +57,27 @@ class VFD(object):
             self.clk.on()
 
     def send_stb(self):
+        '''Send a serial interface strobe signal to the display controller.
+        Bytes sent after this signal will be processed as a command.
+        '''
         self.stb.on()
         self.stb.off()
 
     def init(self):
+        '''Init the display.
+        '''
         self.send_stb()
-
         self.send(CMD2_CMD | WR_TO_DISPLAY_MODE_CMD)
-        self.send_stb()
 
+        self.clear()
+        self.set_mode(None)  # FIXME
+        self.set_brightness(3)
+
+    def clear(self):
+        '''Clears display memory.
+        This erases all digits from the display.
+        '''
+        self.send_stb()
         self.send(CMD3_CMD)
 
         for i in range(8):
@@ -64,16 +86,46 @@ class VFD(object):
 
         self.send_stb()
 
+    def set_mode(self, mode):
+        '''Set display mode.
+        '''
+        # FIXME Currently only support 7 digits / 15 segments
+        # NOTICE The center point of each digit cannot be lighted. It's not connected...
+        self.send_stb()
         self.send(CMD1_CMD | PT6312_MODE)
+
         self.send_stb()
 
-        self.send(CMD4_CMD | DISPLAY_ON | PT6312_LIGHT)
+    def set_brightness(self, brightness):
+        '''Set display brightness. Range [0,7]
+        '''
+        if brightness not in range(0, 8):
+            raise ValueError('Invalid brightness value: {}. Must be in [0, 7]'.format(
+                brightness
+            ))
         self.send_stb()
+        self.send(CMD4_CMD | DISPLAY_ON | brightness)
+
+        self.send_stb()
+
+    def on(self):
+        '''Turn on the display.
+        This only turns on the transformer, it does not touch the display memory.
+        '''
+        self.hv.on()
+
+    def off(self):
+        '''Turn off the display.
+        This only turns off the transformer, it does not touch the display memory.
+        '''
+        self.hv.off()
 
     def display_all(self):
+        '''Display all segments. Mainly for test.
+        '''
         self.send(CMD2_CMD | WR_TO_DISPLAY_MODE_CMD)
-        self.send_stb()
 
+        self.send_stb()
         self.send(CMD3_CMD)
 
         for i in range(8):
@@ -83,6 +135,8 @@ class VFD(object):
         self.send_stb()
 
     def update(self, buffer):
+        '''Update a 7-digits buffer into display memory.
+        '''
         self.send(CMD2_CMD | WR_TO_DISPLAY_MODE_CMD)
         self.send_stb()
 
