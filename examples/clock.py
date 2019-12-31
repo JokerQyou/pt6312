@@ -14,21 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-from time import sleep
+from datetime import datetime
 
 from pt6312.pt6312 import VFD
 from pt6312.font_seg13 import * # FIXME
-
-VFD_Test = [
-    SEG13_CHAR_V,
-    SEG13_CHAR_F,
-    SEG13_CHAR_D,
-    SEG13_CHAR_T,
-    SEG13_CHAR_E,
-    SEG13_CHAR_S,
-    SEG13_CHAR_T,
-]
-Dis_Buffer = [0] * 7
 
 ucDotFlac = 0
 
@@ -37,26 +26,19 @@ def s(char):
     '''Char code lookup'''
     return SEG13_Char_Code[ord(char) - ord(' ')]
 
+
 def main():
     vfd = VFD(8, 7, 1, hv_on=25)
     vfd.on()
-    vfd.display_all()
-    sleep(0.2)
-    import pdb; pdb.set_trace()
+    vfd.delay(200)
 
-    vfd.update(VFD_Test)
-    sleep(0.2)
-
-    Dis_Buffer = [
-        s('H'),
-        s('E'),
-        s('L'),
-        s('L'),
-        s('O'),
-        s('1'),
-        s('1'),
-    ]
-    vfd.update(Dis_Buffer)
+    while 1:
+        now = datetime.now()
+        # TODO Support colon mark
+        now_str = now.strftime('%H%M%S ')
+        buffer = [s(char) for char in now_str]
+        vfd.update(buffer)
+        vfd.delay(1000)
 
 
 if __name__ == '__main__':
