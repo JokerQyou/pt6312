@@ -16,8 +16,8 @@
 
 from time import sleep
 
-from .pt6312 import VFD
-from .font_seg13 import * # FIXME
+from pt6312.pt6312 import VFD
+from pt6312.font_seg13 import * # FIXME
 
 VFD_Test = [
     SEG13_CHAR_V,
