@@ -58,7 +58,8 @@ class VFD(object):
 
     def send_stb(self):
         '''Send a serial interface strobe signal to the display controller.
-        Bytes sent after this signal will be processed as a command.
+        This would create a falling edge on STB pin, and
+        bytes sent after this signal will be processed as a command.
         '''
         self.stb.on()
         self.stb.off()
