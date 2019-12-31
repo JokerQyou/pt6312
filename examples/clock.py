@@ -17,14 +17,6 @@
 from datetime import datetime
 
 from pt6312.pt6312 import VFD
-from pt6312.font_seg13 import * # FIXME
-
-ucDotFlac = 0
-
-
-def s(char):
-    '''Char code lookup'''
-    return SEG13_Char_Code[ord(char) - ord(' ')]
 
 
 def main():
@@ -35,9 +27,8 @@ def main():
     while 1:
         now = datetime.now()
         # TODO Support colon mark
-        now_str = now.strftime('%H%M%S ')
-        buffer = [s(char) for char in now_str]
-        vfd.update(buffer)
+        now_str = now.strftime('%H:%M:%S')
+        vfd.update(now_str)
         vfd.delay(1000)
 
 
