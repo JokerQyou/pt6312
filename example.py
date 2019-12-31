@@ -38,8 +38,8 @@ def s(char):
     return SEG13_Char_Code[ord(char) - ord(' ')]
 
 def main():
-    vfd = VFD(10, 11, 8, hv_on=17)
-    vfd.init()
+    vfd = VFD(8, 7, 1, hv_on=25)
+    vfd.on()
     vfd.display_all()
     sleep(0.2)
     import pdb; pdb.set_trace()
