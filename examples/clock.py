@@ -26,7 +26,6 @@ def main():
 
     while 1:
         now = datetime.now()
-        # TODO Support colon mark
         now_str = now.strftime('%H:%M:%S')
         vfd.update(now_str)
         vfd.delay(1000)

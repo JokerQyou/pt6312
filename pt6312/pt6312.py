@@ -147,7 +147,7 @@ class VFD(object):
         A more user-friendly version of .update_buffer(buffer)
         Notice:
           - `content` can be any thing with a length of 7.
-          - if 3rd and 6th char in `content` is ':', these does not counted for length.
+          - if 3rd and 6th char in `content` is ':', these does not count.
         '''
         # Check for colon mark on 3rd and 6th char
         colon_left = colon_right = False
@@ -163,7 +163,7 @@ class VFD(object):
             content += ' ' * (7 - len(content))
         else:
             raise ValueError('Can only display {} char at a time, but got {}'.format(
-                7, length,
+                7, len(content),
             ))
 
         # Convert to buffer data
