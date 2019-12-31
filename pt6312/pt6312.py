@@ -24,11 +24,12 @@ from .constants import *
 class VFD(object):
 
     def __init__(self, din, clk, stb, hv_on=17):
-        # Hardcoded wires
         self.stb = OP(stb)
         self.din = OP(din)
         self.clk = OP(clk)
         self.hv = OP(hv_on)
+
+        self.__sleep = Event()
 
         self.init()
 
@@ -120,6 +121,11 @@ class VFD(object):
         This only turns off the transformer, it does not touch the display memory.
         '''
         self.hv.off()
+
+    def delay(self, ms):
+        '''Delay for given duration (in millisecond).
+        '''
+        self.__sleep.wait(ms / 1000.0)
 
     def display_all(self):
         '''Display all segments. Mainly for test.
