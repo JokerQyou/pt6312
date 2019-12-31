@@ -19,6 +19,7 @@ from threading import Event
 from gpiozero import OutputDevice as OP
 
 from .constants import *
+from .font_seg13 import SEG13_Char_Code as CHAR_TABLE, SEG13_DP
 
 
 class VFD(object):
@@ -141,7 +142,48 @@ class VFD(object):
 
         self.send_stb()
 
-    def update(self, buffer):
+    def update(self, content):
+        '''Update a slice / string into display memory.
+        A more user-friendly version of .update_buffer(buffer)
+        Notice:
+          - `content` can be any thing with a length of 7.
+          - if 3rd and 6th char in `content` is ':', these does not counted for length.
+        '''
+        # Check for colon mark on 3rd and 6th char
+        colon_left = colon_right = False
+        base = ord(' ')
+        if content[2] == ':':
+            colon_left = True
+            content = content[:2] + content[3:]
+        if content[4] == ':':
+            colon_right = True
+            content = content[:4] + content[5:]
+
+        if len(content) < 7:
+            content += ' ' * (7 - len(content))
+        else:
+            raise ValueError('Can only display {} char at a time, but got {}'.format(
+                7, length,
+            ))
+
+        # Convert to buffer data
+        buffer = [CHAR_TABLE[ord(c) - base] for c in content]
+
+        # Colon marks require special data bit
+        if colon_left:
+            buffer[2] |= SEG13_DP
+        else:
+            buffer[2] &= ~SEG13_DP
+
+        if colon_right:
+            buffer[4] |= SEG13_DP
+        else:
+            buffer[4] &= ~SEG13_DP
+
+        # Send to display memory
+        self.update_buffer(buffer)
+
+    def update_buffer(self, buffer):
         '''Update a 7-digits buffer into display memory.
         '''
         self.send(CMD2_CMD | WR_TO_DISPLAY_MODE_CMD)
