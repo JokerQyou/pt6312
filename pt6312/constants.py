@@ -27,14 +27,14 @@ DISPLAY_11GRID_11SEGMENT_MODE = 0x07
 
 # COMMAND 2: DATA SETTING COMMANDS，设置数据从PT6312读或写
 DATA_SET_CMD = 0x40
-WR_TO_DISPLAY_MODE_CMD = 0x00  # Write to display
-WR_TO_LED_PORT_CMD = 0x01  # Write to LED port
-RD_KEY_DATA_CMD = 0x02  # Read key data
-RD_SW_DATA_CMD = 0x03  # Read SW data
-INC_ADDRESS_CMD = 0x00  # Increment address after data has been written
-FIXED_ADDRESS_CMD = 0x04  # Fixed address
-NORM_MODE_CMD = 0x00  # Normal operation mode
-TEST_MODE_CMD = 0x08  # Test mode
+DATA_WR = 0x00  # Write to display
+LED_WR = 0x01  # Write to LED port
+KEY_RD = 0x02  # Read key data
+SW_RD = 0x03  # Read SW data
+ADDR_INC = 0x00  # Increment address after data has been written
+ADDR_FIXED = 0x04  # Fixed address
+NORM_MODE = 0x00  # Normal operation mode
+TEST_MODE = 0x08  # Test mode
 
 # COMMAND 3: ADDRESS SETTING COMMANDS，显示内存地址设置
 ADDR_SET_CMD = 0xC0

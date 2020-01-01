@@ -70,7 +70,7 @@ class VFD(object):
         '''Init the display.
         '''
         self.send_stb()
-        self.send(DATA_SET_CMD | WR_TO_DISPLAY_MODE_CMD | INC_ADDRESS_CMD | NORM_MODE_CMD)
+        self.send(DATA_SET_CMD | DATA_WR | ADDR_INC | NORM_MODE)
 
         self.clear()
         self.set_mode(None)  # FIXME
@@ -131,7 +131,7 @@ class VFD(object):
     def display_all(self):
         '''Display all segments. Mainly for test.
         '''
-        self.send(DATA_SET_CMD | WR_TO_DISPLAY_MODE_CMD | INC_ADDRESS_CMD | NORM_MODE_CMD)
+        self.send(DATA_SET_CMD | DATA_WR | ADDR_INC | NORM_MODE)
 
         self.send_stb()
         self.send(ADDR_SET_CMD)
@@ -186,7 +186,7 @@ class VFD(object):
     def update_buffer(self, buffer):
         '''Update a 7-digits buffer into display memory.
         '''
-        self.send(DATA_SET_CMD | WR_TO_DISPLAY_MODE_CMD | INC_ADDRESS_CMD | NORM_MODE_CMD)
+        self.send(DATA_SET_CMD | DATA_WR | ADDR_INC | NORM_MODE)
         self.send_stb()
 
         self.send(ADDR_SET_CMD)
