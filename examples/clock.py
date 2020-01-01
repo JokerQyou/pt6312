@@ -16,7 +16,7 @@
 
 from datetime import datetime
 
-from pt6312.pt6312 import VFD
+from pt6312 import VFD
 
 
 def main():
@@ -26,8 +26,7 @@ def main():
 
     while 1:
         now = datetime.now()
-        now_str = now.strftime('%H:%M:%S')
-        vfd.update(now_str)
+        vfd.update(now.strftime('%H:%M:%S'))
         vfd.delay(1000)
 
 
