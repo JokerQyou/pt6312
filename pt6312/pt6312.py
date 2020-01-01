@@ -70,7 +70,7 @@ class VFD(object):
         '''Init the display.
         '''
         self.send_stb()
-        self.send(CMD2_CMD | WR_TO_DISPLAY_MODE_CMD)
+        self.send(DATA_SET_CMD | WR_TO_DISPLAY_MODE_CMD | INC_ADDRESS_CMD | NORM_MODE_CMD)
 
         self.clear()
         self.set_mode(None)  # FIXME
@@ -81,7 +81,7 @@ class VFD(object):
         This erases all digits from the display.
         '''
         self.send_stb()
-        self.send(CMD3_CMD)
+        self.send(ADDR_SET_CMD)
 
         for i in range(8):
             self.send(0x00)
@@ -95,7 +95,7 @@ class VFD(object):
         # FIXME Currently only support 7 digits / 15 segments
         # NOTICE The center point of each digit cannot be lighted. It's not connected...
         self.send_stb()
-        self.send(CMD1_CMD | PT6312_MODE)
+        self.send(MODE_SET_CMD | PT6312_MODE)
 
         self.send_stb()
 
@@ -107,7 +107,7 @@ class VFD(object):
                 brightness
             ))
         self.send_stb()
-        self.send(CMD4_CMD | DISPLAY_ON | brightness)
+        self.send(DSP_CTRL_CMD | DISPLAY_ON | brightness)
 
         self.send_stb()
 
@@ -131,10 +131,10 @@ class VFD(object):
     def display_all(self):
         '''Display all segments. Mainly for test.
         '''
-        self.send(CMD2_CMD | WR_TO_DISPLAY_MODE_CMD)
+        self.send(DATA_SET_CMD | WR_TO_DISPLAY_MODE_CMD | INC_ADDRESS_CMD | NORM_MODE_CMD)
 
         self.send_stb()
-        self.send(CMD3_CMD)
+        self.send(ADDR_SET_CMD)
 
         for i in range(8):
             self.send(0xFF)
@@ -186,10 +186,10 @@ class VFD(object):
     def update_buffer(self, buffer):
         '''Update a 7-digits buffer into display memory.
         '''
-        self.send(CMD2_CMD | WR_TO_DISPLAY_MODE_CMD)
+        self.send(DATA_SET_CMD | WR_TO_DISPLAY_MODE_CMD | INC_ADDRESS_CMD | NORM_MODE_CMD)
         self.send_stb()
 
-        self.send(CMD3_CMD)
+        self.send(ADDR_SET_CMD)
 
         for i in range(7):
             self.send((buffer[i] >> 8) & 0x00FF)
