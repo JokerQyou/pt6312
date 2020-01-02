@@ -14,10 +14,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-#  定义表格占位符
+# Just a placeholder for an empty cell in the characters definition table
 _______ = 0
 
-# 码段显示定义
+# Segments definition
 # 高电平点亮，移植时需要根据实际修改
 SEG13_A = 0x0200    # 码段A显示
 SEG13_B = 0x1000    # 码段B显示
@@ -36,8 +36,7 @@ SEG13_DP = 0x0100   # 码段DP显示
 SEG13_BLK = 0x0000  # 无显
 
 
-# 字符显示定义
-
+# Characters definition
 # 共阴型数码管，码段高电平公共端低电平点亮
 SEG13_CHAR_SP      = (_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______)  # (space)
 SEG13_CHAR_EXCLA   = (_______|_______|_______|SEG13_D|_______|_______|_______|_______|SEG13_I|_______|_______|_______|_______)  # !
@@ -135,10 +134,11 @@ SEG13_CHAR_VERTI   = (_______|_______|_______|_______|_______|_______|_______|__
 SEG13_CHAR_RBRAC   = (SEG13_A|_______|_______|SEG13_D|_______|_______|_______|_______|_______|SEG13_J|SEG13_K|SEG13_M|_______)  # }
 SEG13_CHAR_TILDE   = (_______|_______|SEG13_C|_______|_______|SEG13_F|SEG13_G|_______|_______|_______|_______|SEG13_M|_______)  # ~
 SEG13_CHAR_DEL     = (_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______|_______)  # (del)
-
 SEG13_CHAR_DP = (SEG13_DP)  # :
 SEG13_CHAR_BLK = (SEG13_BLK)  # 无显
 
+# ASCII chracters table
+# Starts with SPACE
 SEG13_Char_Code = [
     SEG13_CHAR_SP,     # (space)
     SEG13_CHAR_EXCLA,  # !
