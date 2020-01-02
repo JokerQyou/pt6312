@@ -18,4 +18,7 @@ setuptools.setup(
         'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
         'Topic :: System :: Hardware',
     ],
+    install_requires=[
+        'gpiozero>=1.5.1',
+    ],
 )
