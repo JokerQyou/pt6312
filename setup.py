@@ -6,7 +6,7 @@ with open('README.md', 'r') as rf:
 
 setuptools.setup(
     name='pt6312',
-    version='0.0.1',
+    version='0.1.0',
     author='Joker Qyou',
     description='Pure Python driver for PT6312-based VFD displays.',
     long_description=long_description,
