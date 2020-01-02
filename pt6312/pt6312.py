@@ -19,7 +19,7 @@ from threading import Event
 from gpiozero import OutputDevice as OP
 
 from .constants import *
-from .font_seg13 import SEG13_Char_Code as CHAR_TABLE, SEG13_DP
+from .font_seg13 import SEG13_Char_Code as CHAR_TABLE, SEG13_CHAR_DP
 
 
 class VFD(object):
@@ -171,14 +171,14 @@ class VFD(object):
 
         # Colon marks require special data bit
         if colon_left:
-            buffer[2] |= SEG13_DP
+            buffer[2] |= SEG13_CHAR_DP
         else:
-            buffer[2] &= ~SEG13_DP
+            buffer[2] &= ~SEG13_CHAR_DP
 
         if colon_right:
-            buffer[4] |= SEG13_DP
+            buffer[4] |= SEG13_CHAR_DP
         else:
-            buffer[4] &= ~SEG13_DP
+            buffer[4] &= ~SEG13_CHAR_DP
 
         # Send to display memory
         self.update_buffer(buffer)
